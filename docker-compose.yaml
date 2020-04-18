@@ -1,0 +1,26 @@
+version: '3'
+services:
+    apache:
+        build: .docker/apache
+        container_name: sf5_apache
+        ports:
+          - 8011:80
+        volumes:
+          - .docker/config/vhosts:/etc/apache2/sites-enabled
+          - .:$PROJECT_PATH
+        depends_on:
+          - php
+        environment:
+          - PROJECT_DIR=$PROJECT_DIR
+          - PROJECT_NAME=$PROJECT_NAME
+          - PROJECT_PATH=$PROJECT_PATH
+
+    php:
+        build: .docker/php
+        container_name: sf5_php
+        volumes:
+          - .:$PROJECT_PATH
+        environment:
+          - PROJECT_DIR=$PROJECT_DIR
+          - PROJECT_NAME=$PROJECT_NAME
+          - PROJECT_PATH=$PROJECT_PATH
